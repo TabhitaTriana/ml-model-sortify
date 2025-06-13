@@ -1,4 +1,5 @@
 from fastapi import FastAPI, UploadFile, File
+from fastapi.middleware.cors import CORSMiddleware
 import numpy as np
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
@@ -20,10 +21,27 @@ if not os.path.exists(MODEL_PATH):
 model = load_model(MODEL_PATH)
 
 # Daftar class
-class_names = np.array(['metal', 'battery', 'plastic', 'shoes', 'paper', 'cardboard', 'glass', 'biological'])
+class_names = np.array([
+    'metal', 'battery', 'plastic', 'shoes',
+    'paper', 'cardboard', 'glass', 'biological'
+])
 
 # Inisialisasi FastAPI
 app = FastAPI()
+
+# ✅ Konfigurasi CORS untuk akses React lokal & production
+origins = [
+    "http://localhost:3000",  # React dev local
+    "https://ml-model-sortify-production.up.railway.app"  # React production
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def read_root():
