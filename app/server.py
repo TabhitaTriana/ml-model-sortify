@@ -32,7 +32,8 @@ app = FastAPI()
 # ✅ Konfigurasi CORS untuk akses React lokal & production
 origins = [
     "http://localhost:3000",  # React dev local
-    "https://ml-model-sortify-production.up.railway.app"  # React production
+    "https://ml-model-sortify-production.up.railway.app",
+    "http://localhost:8097",  # React production
 ]
 
 app.add_middleware(
